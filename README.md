@@ -34,17 +34,21 @@ Bộ cài đặt chính thức đã đóng gói sẵn toàn bộ môi trường 
 3. Chương trình sẽ tự động cài đặt gọn gàng vào thư mục `C:\Users\<Tên_Bạn>\AppData\Local\Programs\LinhScript` và cấu hình sẵn lệnh hệ thống.
 
 ### Bước 3: Chạy chương trình đầu tiên
-1. Tạo một file mới tên là **`hello.hql`** với nội dung:
+1. Tạo một file mới tên là **`hello_world.hql`** với nội dung:
    ```java
-   print("Xin chào LinhScript!");
-   var ten = "Linh";
-   print("Tôi là " + ten);
+   // Chương trình Hello World đầu tiên
+   use hql.time;
+
+   print("Hello World!!!");
+   var ten = input("Nhập tên của bạn: ");
+   print("Xin chào " + ten + "!");
+   print("Hôm nay là: " + format(now(), "dd/MM/yyyy"));
    ```
 2. Mở **Command Prompt (CMD)** hoặc **PowerShell** tại thư mục chứa file và gõ lệnh:
    ```bash
-   LinhScript hello.hql
+   LinhScript hello_world.hql
    ```
----
+
 
 ## 2. Cú pháp cơ bản
 
