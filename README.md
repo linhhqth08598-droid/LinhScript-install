@@ -143,7 +143,7 @@ try {
 }
 ```
 
-Lỗi không bắt sẽ in ra có **tên file, số dòng, đoạn code và đường đi các hàm** (do `BaoLoi.java`).
+Lỗi không bắt sẽ in ra có **tên file, số dòng, đoạn code và đường đi các hàm** (do `ErrorReport.java`).
 
 ### 2.7 Danh sách từ khóa
 
