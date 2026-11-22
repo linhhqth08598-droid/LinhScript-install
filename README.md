@@ -1,4 +1,4 @@
-# LinhScript (HQL) — Ngôn ngữ lập trình tiếng Việt do Hà Quang Linh xây dựng
+# LinhScript (HQL) — Ngôn ngữ lập trình do Hà Quang Linh xây dựng
 
 LinhScript (tên viết tắt **HQL**, file có đuôi `.hql`) là một ngôn ngữ lập trình thông dịch được viết bằng **Java 21**.
 Cú pháp gọn như JavaScript/Python, có sẵn **28 thư viện lõi** (toán, file, mạng, database, web server, game 2D,
