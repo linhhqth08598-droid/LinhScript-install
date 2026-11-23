@@ -1,423 +1,925 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinhScript (HQL) — Ngôn ngữ lập trình đa năng</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0b1120;
-      color: #e2e8f0;
+    :root {
+      --bg-main: #0B1120;
+      --bg-card: #111827;
+      --bg-code: #0D1322;
+      --border: rgba(148, 163, 184, 0.14);
+      --border-glow: rgba(56, 189, 248, 0.35);
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --accent: #3B82F6;
+      --accent-hover: #2563EB;
+      --accent-cyan: #38BDF8;
     }
-    code, pre, .font-mono {
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 75% 45% at 22% -5%, rgba(59, 130, 246, 0.22), transparent),
+        radial-gradient(ellipse 65% 45% at 82% 8%, rgba(56, 189, 248, 0.16), transparent),
+        radial-gradient(ellipse 60% 40% at 50% 95%, rgba(99, 102, 241, 0.12), transparent);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 17, 32, 0.78);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .badge-hql {
+      background: linear-gradient(135deg, #2563EB, #06B6D4);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 72px 0 84px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.18fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .version-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      color: #7DD3FC;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
+    }
+
+    .version-dot {
+      width: 7px;
+      height: 7px;
+      background: #38BDF8;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #38BDF8;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 3.6vw, 3rem);
+      font-weight: 800;
+      line-height: 1.16;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #FFFFFF 35%, #CBD5E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.02rem;
+      line-height: 1.68;
+      margin-bottom: 30px;
+      max-width: 520px;
+    }
+
+    .hero-desc strong {
+      color: #E2E8F0;
+      font-weight: 600;
+    }
+
+    /* Split Download Button + Dropdown */
+    .download-wrapper {
+      position: relative;
+      display: inline-block;
+      z-index: 40;
+    }
+
+    .split-btn {
+      display: inline-flex;
+      align-items: stretch;
+      border-radius: 11px;
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(96, 165, 250, 0.3);
+      overflow: hidden;
+      background: linear-gradient(135deg, #3B82F6, #2563EB);
+    }
+
+    .btn-download-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.96rem;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-download-main:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      border: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(0, 0, 0, 0.08);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-dropdown-toggle:hover {
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .btn-dropdown-toggle svg {
+      transition: transform 0.2s ease;
+    }
+
+    .download-wrapper.open .btn-dropdown-toggle svg {
+      transform: rotate(180deg);
+    }
+
+    .release-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 340px;
+      background: #131C31;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px;
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.65);
+      padding: 8px;
+      display: none;
+      z-index: 60;
+    }
+
+    .download-wrapper.open .release-dropdown {
+      display: block;
+      animation: fadeDrop 0.16s ease-out;
+    }
+
+    @keyframes fadeDrop {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-header {
+      padding: 6px 10px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748B;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      margin-bottom: 6px;
+    }
+
+    .release-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: background 0.15s;
+    }
+
+    .release-item:hover {
+      background: rgba(59, 130, 246, 0.16);
+    }
+
+    .release-item-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .release-tag {
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .tag-latest {
+      font-size: 0.68rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-weight: 600;
+    }
+
+    .release-sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
       font-family: 'JetBrains Mono', monospace;
     }
+
+    .release-size {
+      font-size: 0.8rem;
+      color: #7DD3FC;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .dropdown-footer {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      text-align: center;
+    }
+
+    .dropdown-footer a {
+      display: block;
+      padding: 7px;
+      font-size: 0.82rem;
+      color: #60A5FA;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .dropdown-footer a:hover {
+      background: rgba(59, 130, 246, 0.12);
+    }
+
+    .file-meta {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: #64748B;
+    }
+
+    .file-meta span {
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    /* Code Window - Giữ form chuẩn index (2).html + màu theo yêu cầu */
+    .code-window {
+      min-width: 0;
+      width: 100%;
+      background: #131A2B;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 14px;
+      box-shadow:
+        0 24px 55px rgba(0, 0, 0, 0.55),
+        0 0 36px rgba(59, 130, 246, 0.12);
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.88);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .code-dots-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .dot.red { background: #EF4444; }
+    .dot.yellow { background: #F59E0B; }
+    .dot.green { background: #10B981; }
+
+    .filename {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #94A3B8;
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #CBD5E1;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-copy:hover {
+      background: rgba(51, 65, 85, 0.95);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-copy.copied {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #34D399;
+    }
+
+    .code-body {
+      padding: 18px 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.8px;
+      line-height: 1.72;
+      background: #101726;
+    }
+
     .code-line {
       display: flex;
-      line-height: 1.7;
+      padding: 0 20px;
+      white-space: pre;
     }
+
+    .code-line:hover {
+      background: rgba(56, 189, 248, 0.05);
+    }
+
     .line-num {
       user-select: none;
-      width: 2.25rem;
-      padding-right: 1rem;
-      text-align: right;
-      color: #475569;
+      width: 30px;
       flex-shrink: 0;
+      color: #475569;
+      text-align: right;
+      padding-right: 16px;
     }
+
     .line-code {
-      white-space: pre;
-      color: #e2e8f0;
+      color: #E2E8F0;
     }
-    .tok-comment { color: #64748b; font-style: italic; }
-    .tok-kw { color: #60a5fa; font-weight: 500; }
-    .tok-fn { color: #38bdf8; }
-    .tok-str { color: #a7f3d0; }
-    .tok-lib { color: #c084fc; }
+
+    /* Syntax colors theo đúng mã màu bạn yêu cầu */
+    .tok-comment { color: #7A7E85; }
+    .tok-use { color: #F3669A; }
+    .tok-var { color: #CF8E6D; }
+    .tok-fn-pink { color: #D77DBB; }
+    .tok-ident { color: #5f7582; font-style: italic; }
+    .tok-str { color: #6AAB73; }
+    .tok-punct { color: #BCBEC4; }
+
+    /* Sections */
+    section.content-sec {
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .sec-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .sec-sub {
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+      margin-bottom: 36px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(59, 130, 246, 0.16);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #60A5FA;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .inline-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: #7DD3FC;
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
+    .cmd-box {
+      margin-top: 12px;
+      background: #0B1120;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #38BDF8;
+    }
+
+    /* Libraries Grid */
+    .libs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .lib-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #38BDF8;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      margin-top: 24px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer a {
+      color: #60A5FA;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .steps-grid, .libs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
-<body class="antialiased selection:bg-blue-500/30 selection:text-blue-200">
+<body>
 
-  <!-- Navbar -->
-  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#0b1120]/90 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-2.5">
-        <span class="text-xl font-extrabold tracking-tight text-white">LinhScript</span>
-        <span class="px-2 py-0.5 text-xs font-bold tracking-wider uppercase rounded bg-blue-600 text-white">HQL</span>
+  <header>
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        LinhScript <span class="badge-hql">HQL</span>
       </a>
-      <nav class="flex items-center gap-7 text-sm font-medium text-slate-300">
-        <a href="#cai-dat" class="hover:text-white transition-colors">Cài đặt</a>
-        <a href="#thu-vien" class="hover:text-white transition-colors">28 Thư viện</a>
-        <a href="https://github.com/linhhqth08598-droid/LinhScript-install" target="_blank" rel="noopener" class="hover:text-white transition-colors">Tài liệu (GitHub)</a>
+      <nav>
+        <a href="#cai-dat">Cài đặt</a>
+        <a href="#thu-vien">28 Thư viện</a>
+        <a href="https://github.com/linhhqth08598-droid/LinhScript-install" target="_blank" rel="noopener">Tài liệu (GitHub)</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative overflow-hidden pt-16 pb-24 border-b border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        
-        <!-- Left Column -->
-        <div class="lg:col-span-5 space-y-6">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/70 border border-blue-800/60 text-xs font-medium text-blue-300">
-            <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-            <span id="hero-version-badge">Phiên bản v1.0.0 • Windows 64-bit</span>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <!-- Cột trái -->
+        <div>
+          <div class="version-pill">
+            <span class="version-dot"></span>
+            <span>Phiên bản <span id="pill-version">v1.0.0</span> • Windows 64-bit</span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-[1.15] tracking-tight">
-            Lập trình gọn nhẹ, đa năng không cần cài thêm
-          </h1>
+          <h1>Lập trình gọn nhẹ, đa năng không cần cài thêm</h1>
 
-          <p class="text-base text-slate-300 leading-relaxed">
-            LinhScript (đuôi file <code class="text-blue-400 font-semibold">.hql</code>) là ngôn ngữ thông dịch do <strong class="text-white font-semibold">Hà Quang Linh</strong> phát triển. Cú pháp dễ học như Python/JS, tích hợp sẵn <strong class="text-white font-semibold">28 thư viện lõi</strong> từ Web Server, Database, Game 2D đến xuất Excel/PDF.
+          <p class="hero-desc">
+            LinhScript (đuôi file <strong>.hql</strong>) là ngôn ngữ thông dịch do <strong>Hà Quang Linh</strong> phát triển.
+            Cú pháp dễ học như Python/JS, tích hợp sẵn <strong>28 thư viện lõi</strong> từ Web Server, Database, Game 2D đến xuất Excel/PDF.
           </p>
 
-          <!-- Split Download Button + Dropdown -->
-          <div class="pt-2 space-y-3">
-            <div class="relative inline-block" id="download-dropdown-wrapper">
-              <div class="inline-flex rounded-lg shadow-lg shadow-blue-600/20">
-                <a id="primary-download-btn"
-                   href="https://github.com/linhhqth08598-droid/LinhScript-install/releases/download/v1.0.0/LinhScript-Setup-1.0.0.exe"
-                   class="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-l-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-colors">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3"/>
-                  </svg>
-                  <span id="primary-download-label">Tải LinhScript 1.0.0 (Windows)</span>
-                </a>
-                <button type="button"
-                        id="dropdown-toggle-btn"
-                        aria-label="Chọn phiên bản khác"
-                        class="px-3 py-3.5 rounded-r-lg bg-blue-600 hover:bg-blue-500 border-l border-blue-500/70 text-white transition-colors flex items-center justify-center">
-                  <svg class="w-4 h-4 transition-transform duration-150" id="dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Dropdown Menu -->
-              <div id="releases-dropdown-menu"
-                   class="hidden absolute left-0 mt-2 w-80 rounded-xl bg-slate-900 border border-slate-700/90 shadow-2xl z-30 overflow-hidden">
-                <div class="px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
-                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Các phiên bản phát hành</span>
-                  <a href="https://github.com/linhhqth08598-droid/LinhScript-install/releases" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline">GitHub ↗</a>
-                </div>
-                <div id="releases-list" class="max-h-64 overflow-y-auto divide-y divide-slate-800/70">
-                  <a href="https://github.com/linhhqth08598-droid/LinhScript-install/releases/download/v1.0.0/LinhScript-Setup-1.0.0.exe"
-                     class="flex items-center justify-between px-4 py-3 hover:bg-slate-800/80 transition-colors">
-                    <div>
-                      <div class="flex items-center gap-2">
-                        <span class="text-sm font-semibold text-white">v1.0.0</span>
-                        <span class="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Mới nhất</span>
-                      </div>
-                      <div class="text-xs text-slate-400 mt-0.5">LinhScript-Setup-1.0.0.exe</div>
-                    </div>
-                    <span class="text-xs font-mono text-slate-400">35.4 MB</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <p class="text-xs text-slate-400" id="hero-file-meta">
-              File: <span class="text-slate-300 font-medium">LinhScript-Setup-1.0.0.exe</span> (35.4 MB) • Đã kèm sẵn môi trường chạy
-            </p>
-          </div>
-        </div>
-
-        <!-- Right Column: Code Window -->
-        <div class="lg:col-span-7 min-w-0">
-          <div class="rounded-xl bg-[#0f172a] border border-slate-800 shadow-2xl overflow-hidden">
-            <!-- Window Header -->
-            <div class="px-4 py-3 bg-[#131c31] border-b border-slate-800/90 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
-                  <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-                  <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
-                </div>
-                <span class="text-xs font-mono text-slate-400 ml-1">hello_world.hql</span>
-              </div>
-
-              <button type="button"
-                      id="copy-code-btn"
-                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/80 transition-all">
-                <svg id="copy-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+          <!-- Nút tải + Dropdown menu -->
+          <div class="download-wrapper" id="downloadWrapper">
+            <div class="split-btn">
+              <a id="mainDownloadBtn"
+                 href="https://github.com/linhhqth08598-droid/LinhScript-install/releases/download/v1.0.0/LinhScript-Setup-1.0.0.exe"
+                 class="btn-download-main">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                <svg id="check-icon" class="w-3.5 h-3.5 hidden text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                <span id="mainDownloadText">Tải LinhScript 1.0.0 (Windows)</span>
+              </a>
+              <button type="button" id="dropdownToggleBtn" class="btn-dropdown-toggle" aria-label="Chọn phiên bản khác" aria-expanded="false">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
-                <span id="copy-btn-text">Sao chép</span>
               </button>
             </div>
 
-            <!-- Code Body -->
-            <div class="p-5 overflow-x-auto text-[13.5px] font-mono">
-              <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="tok-comment">// Chương trình Hello World đầu tiên</span></span></div>
-              <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="tok-kw">use</span> <span class="tok-lib">hql.time</span>;</span></div>
-              <div class="code-line"><span class="line-num">3</span><span class="line-code"></span></div>
-              <div class="code-line"><span class="line-num">4</span><span class="line-code"><span class="tok-fn">print</span>(<span class="tok-str">"Hello World!!!"</span>);</span></div>
-              <div class="code-line"><span class="line-num">5</span><span class="line-code"><span class="tok-kw">var</span> ten = <span class="tok-fn">input</span>(<span class="tok-str">"Nhập tên của bạn: "</span>);</span></div>
-              <div class="code-line"><span class="line-num">6</span><span class="line-code"><span class="tok-fn">print</span>(<span class="tok-str">"Xin chào "</span> + ten + <span class="tok-str">"!"</span>);</span></div>
-              <div class="code-line"><span class="line-num">7</span><span class="line-code"><span class="tok-fn">print</span>(<span class="tok-str">"Hôm nay là: "</span> + <span class="tok-fn">format</span>(<span class="tok-fn">now</span>(), <span class="tok-str">"dd/MM/yyyy"</span>));</span></div>
+            <div class="release-dropdown" id="releaseDropdown">
+              <div class="dropdown-header">Danh sách phiên bản GitHub Releases</div>
+              <div id="releaseList">
+                <a class="release-item" href="https://github.com/linhhqth08598-droid/LinhScript-install/releases/download/v1.0.0/LinhScript-Setup-1.0.0.exe">
+                  <div class="release-item-left">
+                    <div class="release-tag">LinhScript v1.0.0 <span class="tag-latest">Mới nhất</span></div>
+                    <div class="release-sub">LinhScript-Setup-1.0.0.exe</div>
+                  </div>
+                  <div class="release-size">35.4 MB</div>
+                </a>
+              </div>
+              <div class="dropdown-footer">
+                <a href="https://github.com/linhhqth08598-droid/LinhScript-install/releases" target="_blank" rel="noopener">
+                  Xem tất cả trên GitHub Releases →
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- Installation Section -->
-  <section id="cai-dat" class="py-20 border-b border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="mb-12">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Cài đặt & Bắt đầu trong 1 phút</h2>
-        <p class="text-slate-400 mt-2">Bộ cài đặt tự động cấu hình biến môi trường hệ thống (PATH) tương tự như Python.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Step 1 -->
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-          <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold text-sm flex items-center justify-center">1</div>
-          <h3 class="text-lg font-semibold text-white">Tải bộ cài đặt</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Nhấn nút <strong class="text-slate-200" id="step1-btn-name">Tải LinhScript 1.0.0</strong> ở phía trên để tải tệp <code class="text-blue-400" id="step1-file-name">LinhScript-Setup-1.0.0.exe</code> về máy tính Windows của bạn.
+          <p class="file-meta">
+            File: <span id="metaFileName">LinhScript-Setup-1.0.0.exe</span> (<span id="metaFileSize">35.4 MB</span>) • Đã kèm sẵn môi trường chạy
           </p>
         </div>
 
-        <!-- Step 2 -->
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-          <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold text-sm flex items-center justify-center">2</div>
-          <h3 class="text-lg font-semibold text-white">Chạy trình cài đặt</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Mở tệp vừa tải, tích chọn <strong class="text-slate-200">"Add LinhScript to PATH (Khuyên dùng)"</strong> và nhấn <strong class="text-slate-200">Next → Install</strong>. Chương trình sẽ tự cài vào <code class="text-slate-300">AppData\Local\Programs\LinhScript</code>.
-          </p>
-        </div>
+        <!-- Cột phải: Khung code giữ layout index (2).html + màu chữ chuẩn yêu cầu -->
+        <div class="code-window">
+          <div class="code-header">
+            <div class="code-dots-title">
+              <div class="dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <span class="filename">hello_world.hql</span>
+            </div>
+            <button type="button" class="btn-copy" id="copyCodeBtn">
+              <svg id="copyIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="copyBtnText">Sao chép</span>
+            </button>
+          </div>
 
-        <!-- Step 3 -->
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
-          <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold text-sm flex items-center justify-center">3</div>
-          <h3 class="text-lg font-semibold text-white">Chạy mã nguồn .hql</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Mở Terminal / CMD ở thư mục bất kỳ và gõ lệnh:
-          </p>
-          <div class="px-3.5 py-2.5 rounded-lg bg-[#090e1a] border border-slate-800 font-mono text-xs text-emerald-400">
-            LinhScript hello_world.hql
+          <div class="code-body" id="codeContainer">
+            <div class="code-line"><span class="line-num">1</span><span class="line-code"><span class="tok-comment">// Chương trình Hello World đầu tiên</span></span></div>
+            <div class="code-line"><span class="line-num">2</span><span class="line-code"><span class="tok-use">use</span> <span class="tok-punct">hql.time;</span></span></div>
+            <div class="code-line"><span class="line-num">3</span><span class="line-code"></span></div>
+            <div class="code-line"><span class="line-num">4</span><span class="line-code"><span class="tok-fn-pink">print</span><span class="tok-punct">(</span><span class="tok-str">"Hello World!!!"</span><span class="tok-punct">);</span></span></div>
+            <div class="code-line"><span class="line-num">5</span><span class="line-code"><span class="tok-var">var</span> <span class="tok-ident">ten</span> <span class="tok-punct">=</span> <span class="tok-fn-pink">input</span><span class="tok-punct">(</span><span class="tok-str">"Nhập tên của bạn: "</span><span class="tok-punct">);</span></span></div>
+            <div class="code-line"><span class="line-num">6</span><span class="line-code"><span class="tok-fn-pink">print</span><span class="tok-punct">(</span><span class="tok-str">"Xin chào "</span> <span class="tok-punct">+</span> <span class="tok-ident">ten</span> <span class="tok-punct">+</span> <span class="tok-str">"!"</span><span class="tok-punct">);</span></span></div>
+            <div class="code-line"><span class="line-num">7</span><span class="line-code"><span class="tok-fn-pink">print</span><span class="tok-punct">(</span><span class="tok-str">"Hôm nay là: "</span> <span class="tok-punct">+</span> <span class="tok-ident">format</span><span class="tok-punct">(</span><span class="tok-ident">now</span><span class="tok-punct">(),</span> <span class="tok-str">"dd/MM/yyyy"</span><span class="tok-punct">));</span></span></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Libraries Section -->
-  <section id="thu-vien" class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="mb-12">
-        <h2 class="text-2xl sm:text-3xl font-bold text-white">Tích hợp sẵn 28 thư viện lõi</h2>
-        <p class="text-slate-400 mt-2">Chỉ cần gọi <code class="text-blue-400">use hql.&lt;tên&gt;;</code> là dùng được ngay mà không cần trình quản lý gói ngoài.</p>
-      </div>
+    <!-- Cài đặt -->
+    <section id="cai-dat" class="content-sec">
+      <div class="container">
+        <h2 class="sec-title">Cài đặt &amp; Bắt đầu trong 1 phút</h2>
+        <p class="sec-sub">Bộ cài đặt tự động cấu hình biến môi trường hệ thống (PATH) tương tự như Python.</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Web Server & HQLSP</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.web</code>, <code class="text-blue-400">hql.net</code>, <code class="text-blue-400">hql.socket</code> — Tạo web server, trang động <code class="text-slate-300">.hqlsp</code>, WebSocket và gọi API.
-          </p>
-        </div>
+        <div class="steps-grid">
+          <div class="card">
+            <div class="step-num">1</div>
+            <h3>Tải bộ cài đặt</h3>
+            <p>
+              Nhấn nút <strong id="step1BtnName">Tải LinhScript 1.0.0</strong> ở phía trên để tải tệp
+              <span class="inline-code" id="step1FileName">LinhScript-Setup-1.0.0.exe</span> về máy tính Windows của bạn.
+            </p>
+          </div>
 
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Cơ sở dữ liệu</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.database</code>, <code class="text-blue-400">hql.env</code> — Hỗ trợ SQL Server, MySQL, PostgreSQL, SQLite kèm Connection Pool.
-          </p>
-        </div>
+          <div class="card">
+            <div class="step-num">2</div>
+            <h3>Chạy trình cài đặt</h3>
+            <p>
+              Mở tệp vừa tải, tích chọn <strong>"Add LinhScript to PATH (Khuyên dùng)"</strong> và nhấn <strong>Next → Install</strong>.
+              Chương trình sẽ tự cài vào <span class="inline-code">AppData\Local\Programs\LinhScript</span>.
+            </p>
+          </div>
 
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Game 2D & Đồ họa</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.game</code>, <code class="text-blue-400">hql.multiplayer</code> — Vòng lặp 60FPS, sprite, bản đồ isometric, âm thanh và mạng đa người chơi.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Văn phòng & Báo cáo</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.export</code>, <code class="text-blue-400">hql.chart</code>, <code class="text-blue-400">hql.mail</code> — Xuất file Excel, Word, PDF có màu sắc, vẽ biểu đồ và gửi email SMTP.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Giao diện & Tự động hóa</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.ui</code>, <code class="text-blue-400">hql.app</code>, <code class="text-blue-400">hql.pc</code> — Tạo cửa sổ Swing, đóng gói web thành app Chromium, điều khiển phím/chuột.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
-          <h3 class="text-base font-semibold text-white">Toán học & Bảo mật</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            <code class="text-blue-400">hql.math</code>, <code class="text-blue-400">hql.crypto</code>, <code class="text-blue-400">hql.schedule</code> — Thống kê, ma trận, mã hóa AES/RSA và lập lịch chạy tác vụ Cron.
-          </p>
+          <div class="card">
+            <div class="step-num">3</div>
+            <h3>Chạy mã nguồn .hql</h3>
+            <p>Tạo tệp <span class="inline-code">hello_world.hql</span>, mở Terminal / CMD tại thư mục chứa tệp và gõ lệnh:</p>
+            <div class="cmd-box">LinhScript hello_world.hql</div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/80 py-8 text-sm text-slate-400">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- 28 Thư viện -->
+    <section id="thu-vien" class="content-sec">
+      <div class="container">
+        <h2 class="sec-title">Tích hợp sẵn 28 thư viện lõi</h2>
+        <p class="sec-sub">Chỉ cần gọi <span class="inline-code">use hql.&lt;tên&gt;;</span> là dùng được ngay mà không cần trình quản lý gói ngoài.</p>
+
+        <div class="libs-grid">
+          <div class="card">
+            <span class="lib-tag">hql.web, hql.net, hql.socket</span>
+            <h3>Web Server &amp; HQLSP</h3>
+            <p>Tạo web server, trang động .hqlsp, WebSocket và gọi API.</p>
+          </div>
+
+          <div class="card">
+            <span class="lib-tag">hql.database, hql.env</span>
+            <h3>Cơ sở dữ liệu</h3>
+            <p>Hỗ trợ SQL Server, MySQL, PostgreSQL, SQLite kèm Connection Pool.</p>
+          </div>
+
+          <div class="card">
+            <span class="lib-tag">hql.game, hql.multiplayer</span>
+            <h3>Game 2D &amp; Đồ họa</h3>
+            <p>Vòng lặp 60FPS, sprite, bản đồ isometric, âm thanh và mạng đa người chơi.</p>
+          </div>
+
+          <div class="card">
+            <span class="lib-tag">hql.export, hql.chart, hql.mail</span>
+            <h3>Văn phòng &amp; Báo cáo</h3>
+            <p>Xuất file Excel, Word, PDF có màu sắc, vẽ biểu đồ và gửi email SMTP.</p>
+          </div>
+
+          <div class="card">
+            <span class="lib-tag">hql.ui, hql.app, hql.pc</span>
+            <h3>Giao diện &amp; Tự động hóa</h3>
+            <p>Tạo cửa sổ Swing, đóng gói web thành app Chromium, điều khiển phím/chuột.</p>
+          </div>
+
+          <div class="card">
+            <span class="lib-tag">hql.math, hql.crypto, hql.schedule</span>
+            <h3>Toán học &amp; Bảo mật</h3>
+            <p>Thống kê, ma trận, mã hóa AES/RSA và lập lịch chạy tác vụ Cron.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>LinhScript (HQL)</strong> — Phát triển bởi <strong>Hà Quang Linh</strong>.</div>
       <div>
-        <strong class="text-slate-200">LinhScript (HQL)</strong> — Phát triển bởi <strong class="text-slate-200">Hà Quang Linh</strong>.
+        <a href="https://github.com/linhhqth08598-droid/LinhScript-install" target="_blank" rel="noopener">Xem tài liệu đầy đủ trên GitHub</a>
       </div>
-      <a href="https://github.com/linhhqth08598-droid/LinhScript-install" target="_blank" rel="noopener" class="text-blue-400 hover:underline">
-        Xem tài liệu đầy đủ trên GitHub →
-      </a>
     </div>
   </footer>
 
   <script>
-    const RAW_CODE = `// Chương trình Hello World đầu tiên
-use hql.time;
+    const GITHUB_REPO = "linhhqth08598-droid/LinhScript-install";
 
-print("Hello World!!!");
-var ten = input("Nhập tên của bạn: ");
-print("Xin chào " + ten + "!");
-print("Hôm nay là: " + format(now(), "dd/MM/yyyy"));`;
+    // 1. Xử lý bật/tắt Dropdown danh sách phiên bản
+    const downloadWrapper = document.getElementById("downloadWrapper");
+    const dropdownToggleBtn = document.getElementById("dropdownToggleBtn");
 
-    // Copy button functionality
-    const copyBtn = document.getElementById('copy-code-btn');
-    const copyIcon = document.getElementById('copy-icon');
-    const checkIcon = document.getElementById('check-icon');
-    const copyText = document.getElementById('copy-btn-text');
+    dropdownToggleBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const isOpen = downloadWrapper.classList.toggle("open");
+      dropdownToggleBtn.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!downloadWrapper.contains(e.target)) {
+        downloadWrapper.classList.remove("open");
+        dropdownToggleBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    // 2. Nút sao chép code (chạy mượt cả file:// lẫn https://)
+    const rawCodeText = [
+      "// Chương trình Hello World đầu tiên",
+      "use hql.time;",
+      "",
+      'print("Hello World!!!");',
+      'var ten = input("Nhập tên của bạn: ");',
+      'print("Xin chào " + ten + "!");',
+      'print("Hôm nay là: " + format(now(), "dd/MM/yyyy"));'
+    ].join("\n");
+
+    const copyCodeBtn = document.getElementById("copyCodeBtn");
+    const copyBtnText = document.getElementById("copyBtnText");
+    const copyIcon = document.getElementById("copyIcon");
     let copyTimer = null;
 
-    function fallbackCopy(text) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.setAttribute('readonly', '');
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-      } finally {
-        document.body.removeChild(textarea);
-      }
-    }
-
-    copyBtn.addEventListener('click', async () => {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(RAW_CODE);
-        } else {
-          fallbackCopy(RAW_CODE);
-        }
-      } catch (e) {
-        fallbackCopy(RAW_CODE);
-      }
-
-      copyIcon.classList.add('hidden');
-      checkIcon.classList.remove('hidden');
-      copyText.textContent = 'Đã sao chép!';
-      copyBtn.classList.add('border-emerald-500/50', 'text-emerald-300', 'bg-emerald-950/40');
-
+    function showCopiedFeedback() {
+      copyCodeBtn.classList.add("copied");
+      copyBtnText.textContent = "Đã sao chép";
+      copyIcon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
       clearTimeout(copyTimer);
       copyTimer = setTimeout(() => {
-        copyIcon.classList.remove('hidden');
-        checkIcon.classList.add('hidden');
-        copyText.textContent = 'Sao chép';
-        copyBtn.classList.remove('border-emerald-500/50', 'text-emerald-300', 'bg-emerald-950/40');
+        copyCodeBtn.classList.remove("copied");
+        copyBtnText.textContent = "Sao chép";
+        copyIcon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
       }, 2500);
-    });
+    }
 
-    // Dropdown toggle
-    const dropdownWrapper = document.getElementById('download-dropdown-wrapper');
-    const dropdownToggleBtn = document.getElementById('dropdown-toggle-btn');
-    const dropdownMenu = document.getElementById('releases-dropdown-menu');
-    const dropdownArrow = document.getElementById('dropdown-arrow');
+    function fallbackCopy(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showCopiedFeedback();
+      } catch (err) {}
+      document.body.removeChild(ta);
+    }
 
-    dropdownToggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isHidden = dropdownMenu.classList.contains('hidden');
-      dropdownMenu.classList.toggle('hidden', !isHidden);
-      dropdownArrow.classList.toggle('rotate-180', isHidden);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!dropdownWrapper.contains(e.target)) {
-        dropdownMenu.classList.add('hidden');
-        dropdownArrow.classList.remove('rotate-180');
+    copyCodeBtn.addEventListener("click", function () {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(rawCodeText).then(showCopiedFeedback).catch(() => fallbackCopy(rawCodeText));
+      } else {
+        fallbackCopy(rawCodeText);
       }
     });
 
-    // GitHub Releases Auto-Fetch
-    const GITHUB_OWNER = 'linhhqth08598-droid';
-    const GITHUB_REPO = 'LinhScript-install';
-
+    // 3. Tự động lấy danh sách Releases & dung lượng file từ GitHub API
     function formatMB(bytes) {
-      if (!bytes || bytes <= 0) return '35.4 MB';
-      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      if (!bytes || isNaN(bytes)) return "35.4 MB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
     }
 
     async function loadGitHubReleases() {
       try {
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases`);
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases`);
         if (!res.ok) return;
         const releases = await res.json();
         if (!Array.isArray(releases) || releases.length === 0) return;
 
-        const validReleases = releases
-          .filter(r => !r.draft)
-          .map(r => {
-            const exeAsset = (r.assets || []).find(a => a.name.toLowerCase().endsWith('.exe')) || (r.assets || [])[0];
-            if (!exeAsset) return null;
-            const cleanVer = r.tag_name.replace(/^v/i, '');
-            return {
-              tag: r.tag_name,
-              cleanVer,
-              fileName: exeAsset.name,
-              sizeMB: formatMB(exeAsset.size),
-              downloadUrl: exeAsset.browser_download_url,
-              publishedAt: r.published_at ? new Date(r.published_at).toLocaleDateString('vi-VN') : ''
-            };
-          })
-          .filter(Boolean);
+        const releaseListEl = document.getElementById("releaseList");
+        releaseListEl.innerHTML = "";
 
-        if (validReleases.length === 0) return;
+        releases.forEach((rel, index) => {
+          const tag = rel.tag_name || rel.name || "v1.0.0";
+          const cleanVer = tag.replace(/^v/i, "");
+          const exeAsset = (rel.assets || []).find(a => a.name && a.name.toLowerCase().endsWith(".exe"));
+          const downloadUrl = exeAsset ? exeAsset.browser_download_url : rel.html_url;
+          const fileName = exeAsset ? exeAsset.name : `LinhScript-Setup-${cleanVer}.exe`;
+          const fileSize = exeAsset ? formatMB(exeAsset.size) : "35.4 MB";
 
-        const latest = validReleases[0];
+          // Cập nhật bản mới nhất lên nút chính & phần hướng dẫn
+          if (index === 0) {
+            document.getElementById("pill-version").textContent = tag.startsWith("v") ? tag : "v" + tag;
+            document.getElementById("mainDownloadBtn").href = downloadUrl;
+            document.getElementById("mainDownloadText").textContent = `Tải LinhScript ${cleanVer} (Windows)`;
+            document.getElementById("metaFileName").textContent = fileName;
+            document.getElementById("metaFileSize").textContent = fileSize;
+            document.getElementById("step1BtnName").textContent = `Tải LinhScript ${cleanVer}`;
+            document.getElementById("step1FileName").textContent = fileName;
+          }
 
-        document.getElementById('hero-version-badge').textContent = `Phiên bản ${latest.tag} • Windows 64-bit`;
-        document.getElementById('primary-download-btn').href = latest.downloadUrl;
-        document.getElementById('primary-download-label').textContent = `Tải LinhScript ${latest.cleanVer} (Windows)`;
-        document.getElementById('hero-file-meta').innerHTML =
-          `File: <span class="text-slate-300 font-medium">${latest.fileName}</span> (${latest.sizeMB}) • Đã kèm sẵn môi trường chạy`;
-        document.getElementById('step1-btn-name').textContent = `Tải LinhScript ${latest.cleanVer}`;
-        document.getElementById('step1-file-name').textContent = latest.fileName;
-
-        const listEl = document.getElementById('releases-list');
-        listEl.innerHTML = validReleases.map((item, idx) => `
-          <a href="${item.downloadUrl}"
-             class="flex items-center justify-between px-4 py-3 hover:bg-slate-800/80 transition-colors">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold text-white">${item.tag}</span>
-                ${idx === 0 ? '<span class="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Mới nhất</span>' : ''}
+          const item = document.createElement("a");
+          item.className = "release-item";
+          item.href = downloadUrl;
+          item.innerHTML = `
+            <div class="release-item-left">
+              <div class="release-tag">
+                LinhScript ${tag.startsWith("v") ? tag : "v" + tag}
+                ${index === 0 ? '<span class="tag-latest">Mới nhất</span>' : ''}
               </div>
-              <div class="text-xs text-slate-400 mt-0.5">${item.fileName}${item.publishedAt ? ' • ' + item.publishedAt : ''}</div>
+              <div class="release-sub">${fileName}</div>
             </div>
-            <span class="text-xs font-mono text-slate-400">${item.sizeMB}</span>
-          </a>
-        `).join('');
-      } catch (err) {
-        // Fallback giữ nguyên thông tin v1.0.0 mặc định
+            <div class="release-size">${fileSize}</div>
+          `;
+          releaseListEl.appendChild(item);
+        });
+      } catch (e) {
+        // Giữ nguyên dữ liệu dự phòng v1.0.0 nếu mất mạng
       }
     }
 
