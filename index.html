@@ -760,6 +760,46 @@
       color: var(--text-secondary);
     }
 
+    /* Plugin Section */
+    .plugin-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 36px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+
+    .plugin-intro-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 28px;
+    }
+
+    .plugin-intro-card h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .plugin-intro-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 22px;
+    }
+
+    .plugin-intro-card p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .plugin-features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
     /* Footer */
     .footer {
       padding: 36px 0;
@@ -788,11 +828,12 @@
     }
 
     @media (max-width: 960px) {
-      .hero-grid {
+      .hero-grid,
+      .plugin-layout {
         grid-template-columns: 1fr;
         gap: 36px;
       }
-      .steps-grid, .lib-grid {
+      .steps-grid, .lib-grid, .plugin-features-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -810,6 +851,7 @@
     <nav class="nav-links">
       <a href="#cai-dat">Cài đặt</a>
       <a href="#thu-vien">28 Thư viện</a>
+      <a href="#plugin">Plugin</a>
       <a href="https://github.com/linhhqth08598-droid/LinhScript-install" target="_blank" rel="noopener">Tài liệu (GitHub)</a>
     </nav>
   </div>
@@ -1023,6 +1065,118 @@
         <h4>Toán học & Bảo mật</h4>
         <div class="lib-tags">hql.math, hql.crypto, hql.schedule</div>
         <p>Thống kê, ma trận, mã hóa AES/RSA và lập lịch chạy tác vụ Cron.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IntelliJ Plugin Section -->
+<section class="section" id="plugin">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Plugin chính thức cho IntelliJ IDEA</h2>
+      <p class="section-subtitle">Hỗ trợ lập trình tệp <code>.hql</code> và tệp cấu hình môi trường <code>.henv</code> trực tiếp ngay trong IDE.</p>
+    </div>
+
+    <div class="plugin-layout">
+      <!-- Left: Download & Overview -->
+      <div class="plugin-intro-card">
+        <div class="version-pill">
+          <span class="version-dot"></span>
+          <span id="plugin-badge-version">Plugin v1.0.0 • IntelliJ IDEA 2023.2 – 2026.x</span>
+        </div>
+
+        <h3>LinhScriptPlugin (.zip)</h3>
+        <p>
+          Tiện ích mở rộng chính chủ giúp lập trình viên viết mã <strong>LinhScript (.hql)</strong> mượt mà như các ngôn ngữ phổ biến: tô màu cú pháp thông minh, gợi ý tự động toàn bộ thư viện, điều hướng mã nguồn nhanh và chạy trực tiếp ngay trong cửa sổ Run của IntelliJ.
+        </p>
+
+        <!-- Split Download Button + Dropdown (Same design as Hero) -->
+        <div class="download-wrapper" id="plugin-download-wrapper">
+          <div class="split-btn">
+            <a href="https://github.com/linhhqth08598-droid/LinhScriptPlugin/releases/download/v1.0.0/LinhScriptPlugin-1.0.0.zip" class="btn-main" id="plugin-main-download-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span id="plugin-main-download-text">Tải Plugin 1.0.0 (.zip)</span>
+            </a>
+            <button type="button" class="btn-toggle" id="plugin-dropdown-toggle" aria-label="Chọn phiên bản Plugin khác">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <div class="release-dropdown" id="plugin-release-dropdown">
+            <div class="dropdown-header">Danh sách phiên bản Plugin Releases</div>
+            <div class="release-list" id="plugin-release-list">
+              <a href="https://github.com/linhhqth08598-droid/LinhScriptPlugin/releases/download/v1.0.0/LinhScriptPlugin-1.0.0.zip" class="release-item">
+                <div class="release-item-left">
+                  <div class="release-tag">LinhScriptPlugin v1.0.0 <span class="tag-latest">Mới nhất</span></div>
+                  <div class="release-file">LinhScriptPlugin-1.0.0.zip</div>
+                </div>
+                <span class="release-size">174 KB</span>
+              </a>
+            </div>
+            <div class="dropdown-footer">
+              <a href="https://github.com/linhhqth08598-droid/LinhScriptPlugin/releases" target="_blank" rel="noopener">Xem tất cả trên GitHub Releases →</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="file-meta" id="plugin-file-meta-info">
+          File: <span>LinhScriptPlugin-1.0.0.zip</span> (174 KB) • Cài đặt trực tiếp không cần giải nén
+        </p>
+      </div>
+
+      <!-- Right: Plugin Feature Cards -->
+      <div class="plugin-features-grid">
+        <div class="lib-card">
+          <h4>Tô màu cú pháp chuẩn xác</h4>
+          <div class="lib-tags">Syntax & Semantic Highlighting</div>
+          <p>Phân biệt rõ từ khóa, biến, hằng số, hàm lõi, lớp kế thừa (<code>class</code>, <code>extends</code>) và comment dòng/khối.</p>
+        </div>
+
+        <div class="lib-card">
+          <h4>Gợi ý mã nguồn thông minh</h4>
+          <div class="lib-tags">use hql.* &amp; import Autocomplete</div>
+          <p>Tự động gợi ý danh sách 28 thư viện lõi, đường dẫn tệp <code>import</code> và các hàm/class công khai có ký hiệu <code>@</code>.</p>
+        </div>
+
+        <div class="lib-card">
+          <h4>Điều hướng &amp; Kiểm tra lỗi</h4>
+          <div class="lib-tags">Ctrl + Click &amp; Real-time Lint</div>
+          <p>Giữ <code>Ctrl + Click</code> để nhảy thẳng tới tệp được import hoặc nơi khai báo biến/hàm; cảnh báo đỏ ngay khi sai cú pháp.</p>
+        </div>
+
+        <div class="lib-card">
+          <h4>Chạy trực tiếp &amp; Hỗ trợ .henv</h4>
+          <div class="lib-tags">Run Configuration &amp; .henv File</div>
+          <p>Tạo dự án LinhScript mới, chạy tệp <code>.hql</code> chỉ với 1 nút bấm và hỗ trợ đầy đủ tệp cấu hình môi trường <code>.henv</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Quick Install Steps for Plugin -->
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Tải tệp Plugin (.zip)</h3>
+        <p>Nhấn nút <strong id="plugin-step1-btn-name">Tải Plugin 1.0.0 (.zip)</strong> ở trên để tải tệp <code id="plugin-step1-file-name">LinhScriptPlugin-1.0.0.zip</code> về máy (giữ nguyên định dạng <code>.zip</code>).</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Cài đặt vào IntelliJ IDEA</h3>
+        <p>Mở <strong>Settings (Ctrl + Alt + S) → Plugins → biểu tượng bánh răng (⚙️) → Install Plugin from Disk...</strong> và chọn tệp <code>.zip</code> vừa tải.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Khởi động lại IDE</h3>
+        <p>Nhấn <strong>Restart IDE</strong> để áp dụng. Sau đó bạn có thể tạo mới tệp <code>.hql</code>, <code>.henv</code> hoặc chạy dự án ngay trong IntelliJ.</p>
       </div>
     </div>
   </div>
@@ -1386,27 +1540,43 @@
   resetTerminal(false);
   runDemoBtn.addEventListener('click', () => resetTerminal(true));
 
-  // 3. Dropdown Toggle
+  // 3. Dropdown Toggle (App + Plugin)
   const downloadWrapper = document.getElementById('download-wrapper');
   const dropdownToggle = document.getElementById('dropdown-toggle');
+  const pluginDownloadWrapper = document.getElementById('plugin-download-wrapper');
+  const pluginDropdownToggle = document.getElementById('plugin-dropdown-toggle');
 
   dropdownToggle.addEventListener('click', (e) => {
     e.stopPropagation();
+    pluginDownloadWrapper.classList.remove('open');
     downloadWrapper.classList.toggle('open');
+  });
+
+  pluginDropdownToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    downloadWrapper.classList.remove('open');
+    pluginDownloadWrapper.classList.toggle('open');
   });
 
   document.addEventListener('click', (e) => {
     if (!downloadWrapper.contains(e.target)) {
       downloadWrapper.classList.remove('open');
     }
+    if (!pluginDownloadWrapper.contains(e.target)) {
+      pluginDownloadWrapper.classList.remove('open');
+    }
   });
 
   // 4. Fetch Releases Automatically from GitHub API
   const GITHUB_OWNER = 'linhhqth08598-droid';
   const GITHUB_REPO = 'LinhScript-install';
+  const PLUGIN_REPO = 'LinhScriptPlugin';
 
-  function formatMB(bytes) {
-    if (!bytes || isNaN(bytes)) return '35.4 MB';
+  function formatSize(bytes, fallback) {
+    if (!bytes || isNaN(bytes)) return fallback;
+    if (bytes < 1024 * 1024) {
+      return Math.round(bytes / 1024) + ' KB';
+    }
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
 
@@ -1426,7 +1596,7 @@
       const latestExe = (latest.assets || []).find(a => a.name.toLowerCase().endsWith('.exe')) || (latest.assets || [])[0];
 
       if (latestExe) {
-        const sizeText = formatMB(latestExe.size);
+        const sizeText = formatSize(latestExe.size, '35.4 MB');
         document.getElementById('hero-badge-version').textContent = `Phiên bản ${latestTag} • Windows 64-bit`;
         document.getElementById('main-download-text').textContent = `Tải LinhScript ${cleanVer} (Windows)`;
         document.getElementById('main-download-link').href = latestExe.browser_download_url;
@@ -1442,7 +1612,7 @@
         const asset = (rel.assets || []).find(a => a.name.toLowerCase().endsWith('.exe')) || (rel.assets || [])[0];
         const url = asset ? asset.browser_download_url : rel.html_url;
         const fileName = asset ? asset.name : `${rel.tag_name} (GitHub)`;
-        const sizeStr = asset ? formatMB(asset.size) : 'GitHub';
+        const sizeStr = asset ? formatSize(asset.size, '35.4 MB') : 'GitHub';
         const badge = idx === 0 ? '<span class="tag-latest">Mới nhất</span>' : '';
 
         const item = document.createElement('a');
@@ -1462,7 +1632,60 @@
     }
   }
 
+  async function loadPluginReleases() {
+    try {
+      const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${PLUGIN_REPO}/releases`);
+      if (!res.ok) return;
+      const releases = await res.json();
+      if (!Array.isArray(releases) || releases.length === 0) return;
+
+      const validReleases = releases.filter(r => !r.draft);
+      if (validReleases.length === 0) return;
+
+      const latest = validReleases[0];
+      const latestTag = latest.tag_name || 'v1.0.0';
+      const cleanVer = latestTag.replace(/^v/i, '');
+      const latestZip = (latest.assets || []).find(a => a.name.toLowerCase().endsWith('.zip')) || (latest.assets || [])[0];
+
+      if (latestZip) {
+        const sizeText = formatSize(latestZip.size, '174 KB');
+        document.getElementById('plugin-badge-version').textContent = `Plugin ${latestTag} • IntelliJ IDEA 2023.2 – 2026.x`;
+        document.getElementById('plugin-main-download-text').textContent = `Tải Plugin ${cleanVer} (.zip)`;
+        document.getElementById('plugin-main-download-link').href = latestZip.browser_download_url;
+        document.getElementById('plugin-file-meta-info').innerHTML = `File: <span>${latestZip.name}</span> (${sizeText}) • Cài đặt trực tiếp không cần giải nén`;
+        document.getElementById('plugin-step1-btn-name').textContent = `Tải Plugin ${cleanVer} (.zip)`;
+        document.getElementById('plugin-step1-file-name').textContent = latestZip.name;
+      }
+
+      const listEl = document.getElementById('plugin-release-list');
+      listEl.innerHTML = '';
+
+      validReleases.forEach((rel, idx) => {
+        const asset = (rel.assets || []).find(a => a.name.toLowerCase().endsWith('.zip')) || (rel.assets || [])[0];
+        const url = asset ? asset.browser_download_url : rel.html_url;
+        const fileName = asset ? asset.name : `${rel.tag_name} (GitHub)`;
+        const sizeStr = asset ? formatSize(asset.size, '174 KB') : 'GitHub';
+        const badge = idx === 0 ? '<span class="tag-latest">Mới nhất</span>' : '';
+
+        const item = document.createElement('a');
+        item.href = url;
+        item.className = 'release-item';
+        item.innerHTML = `
+            <div class="release-item-left">
+              <div class="release-tag">LinhScriptPlugin ${rel.tag_name} ${badge}</div>
+              <div class="release-file">${fileName}</div>
+            </div>
+            <span class="release-size">${sizeStr}</span>
+          `;
+        listEl.appendChild(item);
+      });
+    } catch (err) {
+      // Giữ nguyên dữ liệu dự phòng v1.0.0 nếu offline
+    }
+  }
+
   loadGitHubReleases();
+  loadPluginReleases();
 </script>
 </body>
 </html>
